@@ -132,7 +132,7 @@ print(Settings1())
 
 查看 [默认值验证](fields.md#validate-default-values) 获取更多信息。
 
-## 环境变量名称
+## 环境变量名称 {#environment-variable-names}
 
 默认情况下，环境变量名称与字段名称相同。
 
@@ -240,7 +240,7 @@ except ValidationError as e:
     在 Windows 上，Python 的 `os` 模块始终将环境变量视为大小写不敏感，因此
     `case_sensitive` 配置设置将无效 - 设置将始终忽略大小写进行更新。
 
-## 解析环境变量值
+## 解析环境变量值 {#parsing-environment-variable-values}
 
 默认情况下，环境变量按字面解析，包括值为空的情况。你可以通过将 `env_ignore_empty` 配置设置设置为 `True` 来选择忽略空环境变量。
 如果你更愿意使用字段的默认值而不是来自环境的空值，这会很有用。
@@ -630,7 +630,7 @@ class Settings(BaseSettings):
     因此，如果你在 dotenv 文件中提供额外值，无论它们是否以 `env_prefix` 开头，
     都会引发 `ValidationError`。
 
-## 命令行支持
+## 命令行支持 {#command-line-support}
 
 Pydantic settings 提供集成的 CLI 支持，使得使用 Pydantic 模型快速定义 CLI 应用程序变得容易。
 Pydantic settings CLI 有两个主要用例：
@@ -978,7 +978,7 @@ sys.argv = ['example.py', 'gamma-cmd', '--opt-gamma=hi']
 assert get_subcommand(Root()).model_dump() == {'opt_gamma': 'hi'}
 ```
 
-### 创建 CLI 应用程序
+### 创建 CLI 应用程序 {#creating-cli-applications}
 
 `CliApp` 类提供了两个实用方法，`CliApp.run` 和 `CliApp.run_subcommand`，可用于将 Pydantic `BaseSettings`、`BaseModel` 或 `pydantic.dataclasses.dataclass` 作为 CLI 应用程序运行。这些方法主要为运行与模型关联的 `cli_cmd` 方法提供结构。
 
@@ -2486,7 +2486,7 @@ class ExplicitFilePathSettings(BaseSettings):
         )
 ```
 
-## 字段值优先级
+## 字段值优先级 {#field-value-priority}
 
 当以多种方式为同一个 `Settings` 字段指定值时，所选值按以下优先级确定（按优先级降序排列）：
 
@@ -2497,7 +2497,7 @@ class ExplicitFilePathSettings(BaseSettings):
 5. 从 secrets 目录加载的变量。
 6. `Settings` 模型的默认字段值。
 
-## 自定义设置源
+## 自定义设置源 {#customise-settings-sources}
 
 如果默认的优先级顺序不符合你的需求，可以通过重写 `Settings` 的 `settings_customise_sources` 方法来更改它。
 
