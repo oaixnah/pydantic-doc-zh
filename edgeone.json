@@ -1,0 +1,9 @@
+{
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/latest/",
+        "statusCode": 301
+      }
+    ]
+}
