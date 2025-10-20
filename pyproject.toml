@@ -9,7 +9,6 @@ dependencies = [
     "build>=1.3.0",
     "mike>=2.1.3",
     "mkdocs-exclude>=1.0.2",
-    "mkdocs-llmstxt>=0.4.0",
     "mkdocs-material>=9.6.21",
     "mkdocs-redirects>=1.2.2",
     "mkdocstrings-python>=1.18.2",
