@@ -20,11 +20,6 @@ jobs:
           echo "VERSION_MAJOR_MINOR=$VERSION_MAJOR_MINOR" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION_MAJOR_MINOR from tag: ${{ github.ref_name }}"
 
-      - name: Checkout docs-site
-        uses: actions/checkout@v5
-        with:
-          ref: docs-site
-
       - name: Checkout current branch
         uses: actions/checkout@v5
 
