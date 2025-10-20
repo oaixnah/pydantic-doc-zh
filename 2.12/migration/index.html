@@ -1,0 +1,5062 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="从 Pydantic V1 迁移。">
+      
+      
+      
+        <link rel="canonical" href="https://docs.pydantic.dev/latest/migration/">
+      
+      
+        <link rel="prev" href="../install/">
+      
+      
+        <link rel="next" href="../version-policy/">
+      
+      
+      <link rel="icon" href="../favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Migration Guide - Pydantic Validation 中文文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../extra/terminal.css">
+    
+      <link rel="stylesheet" href="../extra/tweaks.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="pink" data-md-color-accent="pink">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="Pydantic Validation 中文文档" class="md-header__button md-logo" aria-label="Pydantic Validation 中文文档" data-md-component="logo">
+      
+  <img src="../logo-white.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pydantic Validation 中文文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Migration Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="pink" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="pink" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="pink" data-md-color-accent="pink"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pydantic/pydantic" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pydantic/pydantic
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  快速开始
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../concepts/models/" class="md-tabs__link">
+          
+  
+  
+  概念
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/base_model/" class="md-tabs__link">
+          
+  
+  
+  API 参考
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../internals/architecture/" class="md-tabs__link">
+          
+  
+  
+  内部实现
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../examples/files/" class="md-tabs__link">
+          
+  
+  
+  示例
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../errors/errors/" class="md-tabs__link">
+          
+  
+  
+  错误信息
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../integrations/logfire/" class="md-tabs__link">
+          
+  
+  
+  集成
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Pydantic Validation 中文文档" class="md-nav__button md-logo" aria-label="Pydantic Validation 中文文档" data-md-component="logo">
+      
+  <img src="../logo-white.svg" alt="logo">
+
+    </a>
+    Pydantic Validation 中文文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pydantic/pydantic" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pydantic/pydantic
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    快速开始
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            快速开始
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Welcome to Pydantic
+    
+      <br>
+      <small>欢迎使用 Pydantic</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Why use Pydantic
+    
+      <br>
+      <small>为什么使用 Pydantic</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../help_with_pydantic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Help with Pydantic
+    
+      <br>
+      <small>获取帮助</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+      <br>
+      <small>安装</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Migration Guide
+    
+      <br>
+      <small>迁移指南</small>
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Migration Guide
+    
+      <br>
+      <small>迁移指南</small>
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Page contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Page contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装 Pydantic V2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      代码转换工具
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-using-pydantic-v1-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      继续使用 Pydantic V1 功能
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="继续使用 Pydantic V1 功能">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v1v2-pydantic-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      在 v1/v2 环境中使用 Pydantic v1 功能
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      迁移指南
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="迁移指南">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changes-to-pydanticbasemodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.BaseModel 的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydanticgenericsgenericmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.generics.GenericModel 的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydanticfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.Field 的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据类的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      配置的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      验证器的变更
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="验证器的变更">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validator-root_validator" class="md-nav__link">
+    <span class="md-ellipsis">
+      @validator 和 @root_validator 已弃用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changes-to-validators-allowed-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      @validator 允许签名的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeerror-validationerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      验证器中 TypeError 不再转换为 ValidationError
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      验证器行为变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow_reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      allow_reuse 关键字参数不再必要
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate_arguments-validate_call" class="md-nav__link">
+    <span class="md-ellipsis">
+      @validate_arguments 已重命名为 @validate_call
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      输入类型不保留
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      标准类型处理的变更
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="标准类型处理的变更">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      字典
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      联合类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-optional-and-nullable-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      必需、可选和可空字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      模式/字符串正则表达式
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      浮点数到整数的类型转换
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#introduction-of-typeadapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeAdapter 的介绍
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      定义自定义类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON 模式生成的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basesettings-has-moved-to-pydantic-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      BaseSettings 已迁移到 pydantic-settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#color-and-payment-card-numbers-moved-to-pydantic-extra-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      颜色和支付卡号已迁移到 pydantic-extra-types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydanticnetworks-url-dsn-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.networks 中的 URL 和 DSN 类型不再继承自 str
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      约束类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mypy 插件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他变更
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      在 Pydantic V2 中迁移的
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      已弃用并在 Pydantic V2 中迁移的
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      在 Pydantic V2 中移除的
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../version-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Version Policy
+    
+      <br>
+      <small>版本策略</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+      <br>
+      <small>贡献</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    概念
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            概念
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Models
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fields
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/json_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSON Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/json/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSON
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/unions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Unions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/alias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Alias
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/serialization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serialization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/validators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/dataclasses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dataclasses
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/forward_annotations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Forward Annotations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/strict_mode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Strict Mode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/type_adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Type Adapter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/validation_decorator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validation Decorator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/conversion_table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Conversion Table
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/pydantic_settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Settings Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Performance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/experimental/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Experimental
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API 参考
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API 参考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Pydantic
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            Pydantic
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/base_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BaseModel
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/root_model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RootModel
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/dataclasses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pydantic Dataclasses
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/type_adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TypeAdapter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/validate_call/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validate Call
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fields
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/aliases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Aliases
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/json_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    JSON Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Errors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/functional_validators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Functional Validators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/functional_serializers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Functional Serializers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/standard_library_types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Standard Library Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pydantic Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Network Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/version/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Version Information
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/annotated_handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Annotated Handlers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/experimental/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Experimental
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Pydantic Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Pydantic Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pydantic_core
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_core_schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pydantic_core.core_schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pydantic Settings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Pydantic Extra Types
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Pydantic Extra Types
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_color/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Color
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_country/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Country
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_payment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Payment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_phone_numbers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Phone Numbers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_routing_numbers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Routing Numbers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_coordinate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Coordinate
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_mac_address/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mac Address
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_isbn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ISBN
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_pendulum_dt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pendulum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_currency_code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Currency
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_language_code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Language
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_script_code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Script Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_semantic_version/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Semantic Version
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pydantic_extra_types_timezone_name/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Timezone Name
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    内部实现
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            内部实现
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../internals/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+      <br>
+      <small>架构</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../internals/resolving_annotations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resolving Annotations
+    
+      <br>
+      <small>解析注解</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    示例
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            示例
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validating File Data
+    
+      <br>
+      <small>验证文件数据</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web and API Requests
+    
+      <br>
+      <small>验证 HTTP 请求数据</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/queues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Queues
+    
+      <br>
+      <small>验证队列数据</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/orms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Databases
+    
+      <br>
+      <small>验证 ORM 数据</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/custom_validators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Custom Validators
+    
+      <br>
+      <small>自定义验证器</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    错误信息
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            错误信息
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Error Handling
+    
+      <br>
+      <small>错误处理</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/validation_errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validation Errors
+    
+      <br>
+      <small>验证错误</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/usage_errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Usage Errors
+    
+      <br>
+      <small>使用错误</small>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    集成
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            集成
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/logfire/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pydantic Logfire
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/llms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LLMs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_3" id="__nav_7_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    开发工具
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_3">
+            <span class="md-nav__icon md-icon"></span>
+            开发工具
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/mypy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mypy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/pyrefly/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pyrefly
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/pycharm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PyCharm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/hypothesis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Hypothesis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/visual_studio_code/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visual Studio Code
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/datamodel_code_generator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    datamodel-code-generator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/devtools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    devtools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/rich/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rich
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/linting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_7_4" id="__nav_7_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    生产工具
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_4">
+            <span class="md-nav__icon md-icon"></span>
+            生产工具
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integrations/aws_lambda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AWS Lambda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Page contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Page contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装 Pydantic V2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      代码转换工具
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-using-pydantic-v1-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      继续使用 Pydantic V1 功能
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="继续使用 Pydantic V1 功能">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v1v2-pydantic-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      在 v1/v2 环境中使用 Pydantic v1 功能
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      迁移指南
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="迁移指南">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changes-to-pydanticbasemodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.BaseModel 的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydanticgenericsgenericmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.generics.GenericModel 的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydanticfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.Field 的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据类的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      配置的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      验证器的变更
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="验证器的变更">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validator-root_validator" class="md-nav__link">
+    <span class="md-ellipsis">
+      @validator 和 @root_validator 已弃用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changes-to-validators-allowed-signatures" class="md-nav__link">
+    <span class="md-ellipsis">
+      @validator 允许签名的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typeerror-validationerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      验证器中 TypeError 不再转换为 ValidationError
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      验证器行为变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow_reuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      allow_reuse 关键字参数不再必要
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate_arguments-validate_call" class="md-nav__link">
+    <span class="md-ellipsis">
+      @validate_arguments 已重命名为 @validate_call
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      输入类型不保留
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      标准类型处理的变更
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="标准类型处理的变更">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      字典
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      联合类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-optional-and-nullable-fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      必需、可选和可空字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      模式/字符串正则表达式
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      浮点数到整数的类型转换
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#introduction-of-typeadapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      TypeAdapter 的介绍
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      定义自定义类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#json" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON 模式生成的变更
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basesettings-has-moved-to-pydantic-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      BaseSettings 已迁移到 pydantic-settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#color-and-payment-card-numbers-moved-to-pydantic-extra-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      颜色和支付卡号已迁移到 pydantic-extra-types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pydanticnetworks-url-dsn-str" class="md-nav__link">
+    <span class="md-ellipsis">
+      pydantic.networks 中的 URL 和 DSN 类型不再继承自 str
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      约束类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mypy 插件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他变更
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      在 Pydantic V2 中迁移的
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      已弃用并在 Pydantic V2 中迁移的
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-v2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      在 Pydantic V2 中移除的
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">迁移指南<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Pydantic V2 引入了许多 API 变更，包括一些破坏性变更。</p>
+<p>本页面提供了一个指南，重点介绍了最重要的变更，以帮助您将代码从 Pydantic V1 迁移到 Pydantic V2。</p>
+<h2 id="pydantic-v2">安装 Pydantic V2<a class="headerlink" href="#pydantic-v2" title="Permanent link">&para;</a></h2>
+<p>Pydantic V2 现在是 Pydantic 的当前生产版本。
+您可以从 PyPI 安装 Pydantic V2：</p>
+<div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pydantic
+</code></pre></div>
+<p>如果遇到任何问题，请使用 <code>bug V2</code> 标签在 <a href="https://github.com/pydantic/pydantic/issues">GitHub 上创建问题</a>。这将帮助我们积极监控和跟踪错误，并继续改进库的性能。</p>
+<p>如果出于任何原因需要使用最新的 Pydantic V1，请参阅下面的 <a href="#continue-using-pydantic-v1-features">继续使用 Pydantic V1 功能</a> 部分，了解有关从 <code>pydantic.v1</code> 安装和导入的详细信息。</p>
+<h2 id="_2">代码转换工具<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>我们创建了一个工具来帮助您迁移代码。这个工具仍处于测试阶段，但我们希望它能帮助您更快地迁移代码。</p>
+<p>您可以从 PyPI 安装该工具：</p>
+<div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>bump-pydantic
+</code></pre></div>
+<p>使用方法很简单。如果您的项目结构是：</p>
+<div class="language-text highlight"><pre><span></span><code>* repo_folder
+    * my_package
+        * &lt;python 源文件&gt; ...
+</code></pre></div>
+<p>那么您需要执行：</p>
+<div class="language-text highlight"><pre><span></span><code>cd /path/to/repo_folder
+bump-pydantic my_package
+</code></pre></div>
+<p>有关更多信息，请参阅 <a href="https://github.com/pydantic/bump-pydantic">Bump Pydantic</a> 仓库。</p>
+<h2 id="continue-using-pydantic-v1-features">继续使用 Pydantic V1 功能<a class="headerlink" href="#continue-using-pydantic-v1-features" title="Permanent link">&para;</a></h2>
+<p>当您需要时，Pydantic V1 仍然可用，但我们建议迁移到 Pydantic V2 以获得其改进和新功能。</p>
+<p>如果您需要使用最新的 Pydantic V1，可以使用以下命令安装：</p>
+<div class="language-bash highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pydantic==1.*&quot;</span>
+</code></pre></div>
+<p>Pydantic V2 包还继续通过 <code>pydantic.v1</code> 导入提供对 Pydantic V1 API 的访问。</p>
+<p>例如，您可以使用 Pydantic V1 的 <code>BaseModel</code> 类而不是 Pydantic V2 的 <code>pydantic.BaseModel</code> 类：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+</code></pre></div>
+<p>您还可以导入已从 Pydantic V2 中移除的函数，例如 <code>lenient_isinstance</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">lenient_isinstance</span>
+</code></pre></div>
+<p>Pydantic V1 文档可在 <a href="https://docs.pydantic.dev/1.10/">https://docs.pydantic.dev/1.10/</a> 获取。</p>
+<h3 id="v1v2-pydantic-v1">在 v1/v2 环境中使用 Pydantic v1 功能<a class="headerlink" href="#v1v2-pydantic-v1" title="Permanent link">&para;</a></h3>
+<p>从 <code>pydantic&gt;=1.10.17</code> 开始，<code>pydantic.v1</code> 命名空间可以在 V1 中使用。
+这使得迁移到 V2 更容易，因为 V2 也支持 <code>pydantic.v1</code> 命名空间。为了解除 <code>pydantic&lt;2</code> 依赖并继续使用 V1 功能，请执行以下步骤：</p>
+<ol>
+<li>将 <code>pydantic&lt;2</code> 替换为 <code>pydantic&gt;=1.10.17</code></li>
+<li>查找并替换所有出现的：</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.</span><span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="o">&lt;</span><span class="nb">object</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>替换为：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1.</span><span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="o">&lt;</span><span class="nb">object</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>以下是您可以根据 Pydantic 版本导入 <code>pydantic</code> 的 v1 功能的方式：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1"><code>pydantic&gt;=1.10.17,&lt;3</code></label><label for="__tabbed_1_2"><code>pydantic&lt;3</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>从 <code>v1.10.17</code> 开始，<code>.v1</code> 命名空间在 V1 中可用，允许如下导入：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1.fields</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelField</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>所有版本的 Pydantic V1 和 V2 都支持以下导入模式，以防您不知道正在使用哪个版本的 Pydantic：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1.fields</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelField</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.fields</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelField</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>当使用 <code>pydantic&gt;=1.10.17,&lt;2</code> 和 <code>.v1</code> 命名空间导入模块时，这些模块将<em>不</em>是与没有 <code>.v1</code> 命名空间的相同导入<strong>相同</strong>的模块，但导入的符号<em>将</em>是相同的。例如 <code>pydantic.v1.fields is not pydantic.fields</code>，但 <code>pydantic.v1.fields.ModelField is pydantic.fields.ModelField</code>。幸运的是，这在绝大多数情况下不太可能相关。这只是提供更平滑迁移体验的不幸后果。</p>
+</div>
+<h2 id="_3">迁移指南<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>以下部分提供了 Pydantic V2 中最重要变更的详细信息。</p>
+<h3 id="changes-to-pydanticbasemodel"><code>pydantic.BaseModel</code> 的变更<a class="headerlink" href="#changes-to-pydanticbasemodel" title="Permanent link">&para;</a></h3>
+<p>各种方法名称已更改；所有非弃用的 <code>BaseModel</code> 方法现在都具有匹配 <code>model_.*</code> 或 <code>__.*pydantic.*__</code> 格式的名称。在可能的情况下，我们保留了具有旧名称的已弃用方法以帮助简化迁移，但调用它们将发出 <code>DeprecationWarning</code>。</p>
+<table>
+<thead>
+<tr>
+<th>Pydantic V1</th>
+<th>Pydantic V2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__fields__</code></td>
+<td><code>model_fields</code></td>
+</tr>
+<tr>
+<td><code>__private_attributes__</code></td>
+<td><code>__pydantic_private__</code></td>
+</tr>
+<tr>
+<td><code>__validators__</code></td>
+<td><code>__pydantic_validator__</code></td>
+</tr>
+<tr>
+<td><code>construct()</code></td>
+<td><code>model_construct()</code></td>
+</tr>
+<tr>
+<td><code>copy()</code></td>
+<td><code>model_copy()</code></td>
+</tr>
+<tr>
+<td><code>dict()</code></td>
+<td><code>model_dump()</code></td>
+</tr>
+<tr>
+<td><code>json_schema()</code></td>
+<td><code>model_json_schema()</code></td>
+</tr>
+<tr>
+<td><code>json()</code></td>
+<td><code>model_dump_json()</code></td>
+</tr>
+<tr>
+<td><code>parse_obj()</code></td>
+<td><code>model_validate()</code></td>
+</tr>
+<tr>
+<td><code>update_forward_refs()</code></td>
+<td><code>model_rebuild()</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>一些内置的数据加载功能已被计划移除。特别是，<code>parse_raw</code> 和 <code>parse_file</code> 现在已被弃用。在 Pydantic V2 中，<code>model_validate_json</code> 的工作方式类似于 <code>parse_raw</code>。否则，您应该加载数据然后将其传递给 <code>model_validate</code>。</li>
+<li><code>from_orm</code> 方法已被弃用；您现在可以使用 <code>model_validate</code>（相当于 Pydantic V1 中的 <code>parse_obj</code>）来实现类似的功能，只要您在模型配置中设置了 <code>from_attributes=True</code>。</li>
+<li>模型的 <code>__eq__</code> 方法已更改。<ul>
+<li>模型只能与其他 <code>BaseModel</code> 实例相等。</li>
+<li>两个模型实例要相等，它们必须具有相同的：<ul>
+<li>类型（或者，对于泛型模型，非参数化的泛型原始类型）</li>
+<li>字段值</li>
+<li>额外值（仅当 <code>model_config['extra'] == 'allow'</code> 时相关）</li>
+<li>私有属性值；具有不同私有属性值的模型不再相等。</li>
+<li>模型不再等于包含其数据的字典。</li>
+<li>不同类型的非泛型模型永远不相等。</li>
+<li>具有不同原始类型的泛型模型永远不相等。我们不要求<em>精确</em>的类型相等性，因此，例如，<code>MyGenericModel[Any]</code> 的实例可以与 <code>MyGenericModel[int]</code> 的实例相等。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>我们已替换了使用 <code>__root__</code> 字段来指定"自定义根模型"的方式，改用名为 <a href="../concepts/models/#rootmodel-and-custom-root-types"><code>RootModel</code></a> 的新类型，旨在替换 Pydantic V1 中使用名为 <code>__root__</code> 字段的功能。请注意，<code>RootModel</code> 类型不再支持 <code>arbitrary_types_allowed</code> 配置设置。有关说明，请参阅<a href="https://github.com/pydantic/pydantic/issues/6710#issuecomment-1700948167">此问题评论</a>。</li>
+<li>我们显著扩展了 Pydantic 在自定义序列化方面的能力。特别是，我们添加了 <a href="../api/functional_serializers/#pydantic.functional_serializers.field_serializer"><code>@field_serializer</code></a>、<a href="../api/functional_serializers/#pydantic.functional_serializers.model_serializer"><code>@model_serializer</code></a> 和 <a href="../api/fields/#pydantic.fields.computed_field"><code>@computed_field</code></a> 装饰器，每个都解决了 Pydantic V1 中的各种缺点。<ul>
+<li>有关这些新装饰器的使用文档，请参阅<a href="../concepts/serialization/#serializers">自定义序列化器</a>。</li>
+<li>由于性能开销和实现复杂性，我们现在已弃用在模型配置中指定 <code>json_encoders</code> 的支持。此功能最初是为了实现自定义序列化逻辑而添加的，我们认为新的序列化装饰器在大多数常见场景中是更好的选择。</li>
+</ul>
+</li>
+<li>我们更改了当模型子类作为父模型中的嵌套字段出现时的序列化行为。在 V1 中，我们总是包含子类实例的所有字段。在 V2 中，当我们转储模型时，我们只包含在字段的注释类型上定义的字段。这有助于防止一些意外的安全错误。您可以在模型导出文档的<a href="../concepts/serialization/#subclasses-of-model-like-types">相关部分</a>中阅读更多相关信息（包括如何选择退出此行为）。</li>
+<li><code>GetterDict</code> 已被移除，因为它只是 <code>orm_mode</code> 的实现细节，而 <code>orm_mode</code> 已被移除。</li>
+<li>在许多情况下，传递给构造函数的参数将被<strong>复制</strong>以执行验证，并在必要时进行强制转换（请参阅<a href="../concepts/models/#attribute-copies">文档</a>）。
+  这在将可变对象作为参数传递给构造函数时尤其值得注意。</li>
+<li><code>.json()</code> 方法已被弃用，尝试使用此弃用方法并带有参数（如 <code>indent</code> 或 <code>ensure_ascii</code>）可能会导致混淆的错误。为了获得最佳结果，请切换到 V2 的等效方法 <code>model_dump_json()</code>。
+如果您仍然想使用上述参数，可以使用<a href="https://github.com/pydantic/pydantic/issues/8825#issuecomment-1946206415">此解决方法</a>。</li>
+<li>非字符串键值的 JSON 序列化通常使用 <code>str(key)</code> 完成，这导致了一些行为变化，例如：</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span> <span class="k">as</span> <span class="n">V2BaseModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span> <span class="k">as</span> <span class="n">V1BaseModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">V1Model</span><span class="p">(</span><span class="n">V1BaseModel</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">V2Model</span><span class="p">(</span><span class="n">V2BaseModel</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span>
+
+
+<span class="n">v1_model</span> <span class="o">=</span> <span class="n">V1Model</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">{</span><span class="kc">None</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+<span class="n">v2_model</span> <span class="o">=</span> <span class="n">V2Model</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">{</span><span class="kc">None</span><span class="p">:</span> <span class="mi">123</span><span class="p">})</span>
+
+<span class="c1"># V1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v1_model</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="c1">#&gt; {&quot;a&quot;: {&quot;null&quot;: 123}}</span>
+
+<span class="c1"># V2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v2_model</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">())</span>
+<span class="c1">#&gt; {&quot;a&quot;:{&quot;None&quot;:123}}</span>
+</code></pre></div>
+<ul>
+<li><code>model_dump_json()</code> 结果经过压缩以节省空间，并不总是与 <code>json.dumps()</code> 输出完全匹配。
+话虽如此，您可以轻松修改 <code>json.dumps()</code> 结果中使用的分隔符以使两个输出对齐：</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span> <span class="k">as</span> <span class="n">V2BaseModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span> <span class="k">as</span> <span class="n">V1BaseModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">V1Model</span><span class="p">(</span><span class="n">V1BaseModel</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">V2Model</span><span class="p">(</span><span class="n">V2BaseModel</span><span class="p">):</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+
+<span class="n">v1_model</span> <span class="o">=</span> <span class="n">V1Model</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fancy&#39;</span><span class="p">,</span> <span class="s1">&#39;sushi&#39;</span><span class="p">])</span>
+<span class="n">v2_model</span> <span class="o">=</span> <span class="n">V2Model</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fancy&#39;</span><span class="p">,</span> <span class="s1">&#39;sushi&#39;</span><span class="p">])</span>
+
+<span class="c1"># V1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v1_model</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="c1">#&gt; {&quot;a&quot;: [&quot;fancy&quot;, &quot;sushi&quot;]}</span>
+
+<span class="c1"># V2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v2_model</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">())</span>
+<span class="c1">#&gt; {&quot;a&quot;:[&quot;fancy&quot;,&quot;sushi&quot;]}</span>
+
+<span class="c1"># Plain json.dumps</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v2_model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()))</span>
+<span class="c1">#&gt; {&quot;a&quot;: [&quot;fancy&quot;, &quot;sushi&quot;]}</span>
+
+<span class="c1"># Modified json.dumps</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v2_model</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">)))</span>
+<span class="c1">#&gt; {&quot;a&quot;:[&quot;fancy&quot;,&quot;sushi&quot;]}</span>
+</code></pre></div>
+<h3 id="pydanticgenericsgenericmodel"><code>pydantic.generics.GenericModel</code> 的变更<a class="headerlink" href="#pydanticgenericsgenericmodel" title="Permanent link">&para;</a></h3>
+<p><code>GenericModel</code> 已被移除。相反，您可以直接继承 <code>typing.Generic</code> 或 <code>typing_extensions.Generic</code>。</p>
+<p>现在，您可以通过直接在 <code>BaseModel</code> 子类上添加 <code>Generic</code> 作为父类来创建泛型 <code>BaseModel</code> 子类。
+这看起来像 <code>class MyGenericModel(BaseModel, Generic[T]): ...</code>。</p>
+<p>不支持混合使用 V1 和 V2 模型，这意味着此类泛型 <code>BaseModel</code>（V2）的类型参数不能是 V1 模型。</p>
+<p>虽然可能不会引发错误，但我们强烈建议不要在 <code>isinstance</code> 检查中使用<em>参数化</em>泛型。</p>
+<ul>
+<li>例如，您不应该执行 <code>isinstance(my_model, MyGenericModel[int])</code>。
+    但是，执行 <code>isinstance(my_model, MyGenericModel)</code> 是可以的。（请注意，对于标准泛型，使用参数化泛型进行子类检查会引发错误。）</li>
+<li>如果您需要对参数化泛型执行 <code>isinstance</code> 检查，可以通过子类化参数化泛型类来实现。这看起来像 <code>class MyIntModel(MyGenericModel[int]): ...</code> 和
+    <code>isinstance(my_model, MyIntModel)</code>。</li>
+</ul>
+<p>更多信息请参阅<a href="../concepts/models/#generic-models">泛型模型</a>文档。</p>
+<h3 id="pydanticfield"><code>pydantic.Field</code> 的变更<a class="headerlink" href="#pydanticfield" title="Permanent link">&para;</a></h3>
+<p><code>Field</code> 不再支持向 JSON 模式添加任意关键字参数。相反，您想要添加到 JSON 模式的任何额外数据都应作为字典传递给 <code>json_schema_extra</code> 关键字参数。</p>
+<p>在 Pydantic V1 中，当未设置别名时，<code>alias</code> 属性返回字段的名称。
+在 Pydantic V2 中，此行为已更改为当未设置别名时返回 <code>None</code>。</p>
+<p>以下属性已从 <code>Field</code> 中移除或更改：</p>
+<ul>
+<li><code>const</code></li>
+<li><code>min_items</code>（改用 <code>min_length</code>）</li>
+<li><code>max_items</code>（改用 <code>max_length</code>）</li>
+<li><code>unique_items</code></li>
+<li><code>allow_mutation</code>（改用 <code>frozen</code>）</li>
+<li><code>regex</code>（改用 <code>pattern</code>）</li>
+<li><code>final</code>（改用 <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/typing.html#typing.Final">typing.Final</a> 类型提示）</li>
+</ul>
+<p>字段约束不再自动推送到泛型的参数中。例如，您不能再通过提供 <code>my_list: list[str] = Field(pattern=".*")</code> 来验证列表中的每个元素是否匹配正则表达式。相反，使用 <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/typing.html#typing.Annotated"><code>typing.Annotated</code></a> 在 <code>str</code> 本身上提供注释：<code>my_list: list[Annotated[str, Field(pattern=".*")]]</code></p>
+<h3 id="_4">数据类的变更<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>Pydantic <a href="../concepts/dataclasses/">数据类</a> 继续用于为标准数据类启用数据验证，而无需子类化 <code>BaseModel</code>。Pydantic V2 对此数据类行为引入了以下更改：</p>
+<ul>
+<li>当用作字段时，数据类（Pydantic 或普通数据类）不再接受元组作为验证输入；应改用字典。</li>
+<li>Pydantic 数据类中的 <code>__post_init__</code> 现在将在验证<em>之后</em>调用，而不是之前。<ul>
+<li>因此，<code>__post_init_post_parse__</code> 方法变得冗余，因此已被移除。</li>
+</ul>
+</li>
+<li>Pydantic 不再支持 Pydantic 数据类的 <code>extra='allow'</code>，其中传递给初始化程序的额外字段将作为额外属性存储在数据类上。<code>extra='ignore'</code> 仍然支持用于在解析数据时忽略意外字段，只是它们不会存储在实例上。</li>
+<li>Pydantic 数据类不再具有属性 <code>__pydantic_model__</code>，并且不再使用底层的 <code>BaseModel</code> 来执行验证或提供其他功能。<ul>
+<li>要执行验证、生成 JSON 模式或使用任何其他在 V1 中可能需要 <code>__pydantic_model__</code> 的功能，您现在应该将数据类包装在 <a class="autorefs autorefs-internal" href="../api/type_adapter/#pydantic.type_adapter.TypeAdapter"><code>TypeAdapter</code></a> 中（<a href="#introduction-of-typeadapter">下面讨论更多</a>）并使用其方法。</li>
+</ul>
+</li>
+<li>在 Pydantic V1 中，如果您使用普通（即非 Pydantic）数据类作为字段，父类型的配置将被用作数据类本身的配置。在 Pydantic V2 中，情况不再如此。<ul>
+<li>在 Pydantic V2 中，要覆盖配置（就像您在 <code>BaseModel</code> 上使用 <code>model_config</code> 一样），您可以使用 <code>@dataclass</code> 装饰器上的 <code>config</code> 参数。
+    有关示例，请参阅<a href="../concepts/dataclasses/#dataclass-config">数据类配置</a>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="_5">配置的变更<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>在 Pydantic V2 中，要在模型上指定配置，您应该设置一个名为 <code>model_config</code> 的类属性，该属性是一个包含您想要用作配置的键/值对的字典。Pydantic V1 在父 <code>BaseModel</code> 子类的命名空间中创建名为 <code>Config</code> 的类的行为现在已被弃用。</p>
+</li>
+<li>
+<p>当子类化模型时，<code>model_config</code> 属性会被继承。这在您希望为许多模型使用具有给定配置的基类时很有帮助。请注意，如果您从多个 <code>BaseModel</code> 子类继承，例如 <code>class MyModel(Model1, Model2)</code>，来自两个模型的 <code>model_config</code> 属性中的非默认设置将被合并，对于在两个模型中定义的任何设置，来自 <code>Model2</code> 的设置将覆盖来自 <code>Model1</code> 的设置。</p>
+</li>
+<li>
+<p>以下配置设置已被移除：</p>
+<ul>
+<li><code>allow_mutation</code> — 这已被移除。您应该能够等效地使用 <a href="../api/config/#pydantic.config.ConfigDict">frozen</a>（与当前使用相反）。</li>
+<li><code>error_msg_templates</code></li>
+<li><code>fields</code> — 这是各种错误的来源，因此已被移除。
+  您应该能够使用 <code>Annotated</code> 在字段上按需修改它们。</li>
+<li><code>getter_dict</code> — <code>orm_mode</code> 已被移除，此实现细节不再必要。</li>
+<li><code>smart_union</code> - Pydantic V2 中的默认 <code>union_mode</code> 是 <code>'smart'</code>。</li>
+<li><code>underscore_attrs_are_private</code> — Pydantic V2 的行为现在与在 Pydantic V1 中始终设置为 <code>True</code> 相同。</li>
+<li><code>json_loads</code></li>
+<li><code>json_dumps</code></li>
+<li><code>copy_on_model_validation</code></li>
+<li><code>post_init_call</code></li>
+</ul>
+</li>
+<li>
+<p>以下配置设置已重命名：</p>
+<ul>
+<li><code>allow_population_by_field_name</code> → <code>populate_by_name</code>（或从 v2.11 开始使用 <code>validate_by_name</code>）</li>
+<li><code>anystr_lower</code> → <code>str_to_lower</code></li>
+<li><code>anystr_strip_whitespace</code> → <code>str_strip_whitespace</code></li>
+<li><code>anystr_upper</code> → <code>str_to_upper</code></li>
+<li><code>keep_untouched</code> → <code>ignored_types</code></li>
+<li><code>max_anystr_length</code> → <code>str_max_length</code></li>
+<li><code>min_anystr_length</code> → <code>str_min_length</code></li>
+<li><code>orm_mode</code> → <code>from_attributes</code></li>
+<li><code>schema_extra</code> → <code>json_schema_extra</code></li>
+<li><code>validate_all</code> → <code>validate_default</code></li>
+</ul>
+</li>
+</ul>
+<p>有关更多详细信息，请参阅 <a class="autorefs autorefs-internal" href="../api/config/#pydantic.config.ConfigDict"><code>ConfigDict</code> API 参考</a>。</p>
+<h3 id="_6">验证器的变更<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<h4 id="validator-root_validator"><code>@validator</code> 和 <code>@root_validator</code> 已弃用<a class="headerlink" href="#validator-root_validator" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>@validator</code> 已被弃用，应替换为 <a href="../concepts/validators/"><code>@field_validator</code></a>，它提供了各种新功能和改进。<ul>
+<li>新的 <code>@field_validator</code> 装饰器没有 <code>each_item</code> 关键字参数；您想要应用于泛型容器内项目的验证器应通过注释类型参数来添加。有关详细信息，请参阅<a href="../concepts/types/#using-the-annotated-pattern">Annotated 元数据中的验证器</a>。
+    这看起来像 <code>list[Annotated[int, Field(ge=0)]]</code></li>
+<li>即使您继续使用已弃用的 <code>@validator</code> 装饰器，您也不能再向验证器函数的签名添加 <code>field</code> 或 <code>config</code> 参数。如果您需要访问这些参数，您需要迁移到 <code>@field_validator</code> — 有关更多详细信息，请参阅<a href="#changes-to-validators-allowed-signatures">下一节</a>。</li>
+<li>如果您使用 <code>always=True</code> 关键字参数到验证器函数，请注意注释类型的标准验证器<em>也</em>将应用于默认值，而不仅仅是自定义验证器。例如，尽管下面的验证器永远不会出错，但以下代码会引发 <code>ValidationError</code>：</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>为避免这种情况，您可以使用 <code>Field</code> 函数中的 <code>validate_default</code> 参数。当设置为 <code>True</code> 时，它模拟了 Pydantic v1 中 <code>always=True</code> 的行为。但是，鼓励使用新的 <code>validate_default</code> 方式，因为它提供了更多的灵活性和控制。</p>
+</div>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">validator</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_x</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+
+<span class="n">Model</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li><code>@root_validator</code> 已被弃用，应替换为
+    <a href="../api/functional_validators/#pydantic.functional_validators.model_validator"><code>@model_validator</code></a>，它也提供了新功能和改进。<ul>
+<li>在某些情况下（例如当 <code>model_config['validate_assignment'] is True</code> 时进行赋值），
+    <code>@model_validator</code> 装饰器将接收模型的实例，而不是值的字典。您可能需要小心处理这种情况。</li>
+<li>即使您继续使用已弃用的 <code>@root_validator</code> 装饰器，由于验证逻辑的重构，
+    您不能再使用 <code>skip_on_failure=False</code> 运行（这是此关键字参数的默认值，因此必须显式设置为 <code>True</code>）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="changes-to-validators-allowed-signatures"><code>@validator</code> 允许签名的变更<a class="headerlink" href="#changes-to-validators-allowed-signatures" title="Permanent link">&para;</a></h4>
+<p>在 Pydantic V1 中，由 <code>@validator</code> 包装的函数可以接收带有关于正在验证内容的元数据的关键字参数。其中一些参数已从 Pydantic V2 中的 <code>@field_validator</code> 中移除：</p>
+<ul>
+<li><code>config</code>：Pydantic V2 的配置现在是一个字典而不是类，这意味着此参数不再向后兼容。如果您需要访问配置，您应该迁移到 <code>@field_validator</code> 并使用 <code>info.config</code>。</li>
+<li><code>field</code>：此参数过去是一个 <code>ModelField</code> 对象，这是一个准内部类，在 Pydantic V2 中不再存在。
+    通过使用 <code>info.field_name</code> 中的字段名索引到 <code>cls.model_fields</code> 中，仍然可以访问大部分此信息。</li>
+</ul>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ValidationInfo</span><span class="p">,</span> <span class="n">field_validator</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">val_x</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="n">ValidationInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">info</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">))</span>
+        <span class="c1">#&gt; Model</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="n">info</span><span class="o">.</span><span class="n">field_name</span><span class="p">]</span><span class="o">.</span><span class="n">is_required</span><span class="p">())</span>
+        <span class="c1">#&gt; True</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+
+<span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="typeerror-validationerror">验证器中 <code>TypeError</code> 不再转换为 <code>ValidationError</code><a class="headerlink" href="#typeerror-validationerror" title="Permanent link">&para;</a></h4>
+<p>以前，在验证器函数中引发 <code>TypeError</code> 时，该错误将被包装到 <code>ValidationError</code> 中，并且在某些情况下（例如使用 FastAPI），这些错误可能会显示给最终用户。这导致了各种不良行为 &mdash; 例如，使用错误签名调用函数可能会产生面向用户的 <code>ValidationError</code>。</p>
+<p>然而，在 Pydantic V2 中，当在验证器中引发 <code>TypeError</code> 时，它不再转换为 <code>ValidationError</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">field_validator</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">val_x</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># 引发 TypeError</span>
+
+
+<span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+    <span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>这适用于所有验证装饰器。</p>
+<h4 id="_7">验证器行为变更<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>Pydantic V2 包含一些类型强制转换的更改。例如：</p>
+<ul>
+<li>将 <code>int</code>、<code>float</code> 和 <code>Decimal</code> 值强制转换为字符串现在是可选的，默认情况下禁用，请参阅
+  <a class="autorefs autorefs-internal" href="../api/config/#pydantic.config.ConfigDict.coerce_numbers_to_str">将数字强制转换为字符串</a>。</li>
+<li>成对的可迭代对象不再强制转换为字典。</li>
+</ul>
+<p>有关 Pydantic V2 类型强制转换默认值的详细信息，请参阅<a href="../concepts/conversion_table/">转换表</a>。</p>
+<h4 id="allow_reuse"><code>allow_reuse</code> 关键字参数不再必要<a class="headerlink" href="#allow_reuse" title="Permanent link">&para;</a></h4>
+<p>以前，Pydantic 跟踪装饰器中的"重用"函数，因为这是一个常见的错误来源。
+我们通过比较函数的完全限定名（模块名 + 函数名）来实现这一点，这可能导致误报。
+当有意重用时，可以使用 <code>allow_reuse</code> 关键字参数来禁用此功能。</p>
+<p>我们检测重复定义函数的方法已经彻底改革，现在只对在单个类内重新定义报错，
+减少了误报，并使行为更符合类型检查器和 linter 在单个类定义中多次定义同名方法时会给出的错误。</p>
+<p>在几乎所有情况下，如果您使用了 <code>allow_reuse=True</code>，您应该能够简单地删除该关键字参数，
+并让一切按预期继续工作。</p>
+<h4 id="validate_arguments-validate_call"><code>@validate_arguments</code> 已重命名为 <code>@validate_call</code><a class="headerlink" href="#validate_arguments-validate_call" title="Permanent link">&para;</a></h4>
+<p>在 Pydantic V2 中，<code>@validate_arguments</code> 装饰器已重命名为 <code>@validate_call</code>。</p>
+<p>在 Pydantic V1 中，装饰的函数添加了各种属性，例如 <code>raw_function</code> 和 <code>validate</code>
+（可用于验证参数而无需实际调用装饰的函数）。由于这些属性的使用有限，以及实现中面向性能的更改，
+我们未在 <code>@validate_call</code> 中保留此功能。</p>
+<h3 id="_8">输入类型不保留<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>在 Pydantic V1 中，我们努力保留泛型集合的所有字段输入类型，当它们是字段注释的适当子类型时。例如，给定注释 <code>Mapping[str, int]</code>，如果您传入 <code>collection.Counter()</code>，您将得到 <code>collection.Counter()</code> 作为值。</p>
+<p>在 V2 中支持此行为将对一般情况产生负面性能影响（我们必须每次都检查类型），并且会给验证增加很多复杂性。此外，即使在 V1 中，此行为也不一致且部分损坏：它对许多类型（<code>str</code>、<code>UUID</code> 等）不起作用，并且对于泛型集合，没有大量特殊情况处理，无法正确重建原始输入（考虑 <code>ChainMap</code>；重建输入是必要的，因为我们需要在验证后替换值，例如，如果强制转换字符串为整数）。</p>
+<p>在 Pydantic V2 中，我们不再尝试在所有情况下保留输入类型；相反，我们只承诺输出类型将匹配类型注释。</p>
+<p>回到 <code>Mapping</code> 示例，我们承诺输出将是有效的 <code>Mapping</code>，实际上它将是一个普通的 <code>dict</code>：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeAdapter</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="n">ta</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">(</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">validate_python</span><span class="p">(</span><span class="n">MyDict</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+<span class="c1">#&gt; &lt;class &#39;dict&#39;&gt;</span>
+</code></pre></div>
+<p>如果您希望输出类型是特定类型，请考虑将其注释为特定类型或实现自定义验证器：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TypeAdapter</span><span class="p">,</span>
+    <span class="n">ValidationInfo</span><span class="p">,</span>
+    <span class="n">ValidatorFunctionWrapHandler</span><span class="p">,</span>
+    <span class="n">WrapValidator</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">restore_input_type</span><span class="p">(</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">handler</span><span class="p">:</span> <span class="n">ValidatorFunctionWrapHandler</span><span class="p">,</span> <span class="n">_info</span><span class="p">:</span> <span class="n">ValidationInfo</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)(</span><span class="n">handler</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">PreserveType</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">WrapValidator</span><span class="p">(</span><span class="n">restore_input_type</span><span class="p">)]</span>
+
+
+<span class="n">ta</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">(</span><span class="n">PreserveType</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]])</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">ta</span><span class="o">.</span><span class="n">validate_python</span><span class="p">(</span><span class="n">MyDict</span><span class="p">())</span>
+<span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="n">MyDict</span>
+</code></pre></div>
+<p>虽然我们不承诺在所有地方保留输入类型，但我们<em>确实</em>为 <code>BaseModel</code> 的子类以及数据类保留它们：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">InnerModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">OuterModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">inner</span><span class="p">:</span> <span class="n">InnerModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SubInnerModel</span><span class="p">(</span><span class="n">InnerModel</span><span class="p">):</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">OuterModel</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">SubInnerModel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="c1">#&gt; inner=SubInnerModel(x=1, y=2)</span>
+
+
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InnerDataclass</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SubInnerDataclass</span><span class="p">(</span><span class="n">InnerDataclass</span><span class="p">):</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nd">@pydantic</span><span class="o">.</span><span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">OuterDataclass</span><span class="p">:</span>
+    <span class="n">inner</span><span class="p">:</span> <span class="n">InnerDataclass</span>
+
+
+<span class="n">d</span> <span class="o">=</span> <span class="n">OuterDataclass</span><span class="p">(</span><span class="n">inner</span><span class="o">=</span><span class="n">SubInnerDataclass</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="c1">#&gt; OuterDataclass(inner=SubInnerDataclass(x=1, y=2))</span>
+</code></pre></div>
+<h3 id="_9">标准类型处理的变更<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<h4 id="_10">字典<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h4>
+<p>成对的可迭代对象（包括空可迭代对象）不再通过 <code>dict</code> 类型字段的验证。</p>
+<h4 id="_11">联合类型<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h4>
+<p>虽然联合类型仍会从左到右尝试验证每个选项，但它们现在尽可能保留输入的类型，
+即使正确的类型不是输入会通过验证的第一个选项。
+作为演示，请考虑以下示例：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Python 3.9 and above</label><label for="__tabbed_2_2">Python 3.10 and above</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="c1">#&gt; x=&#39;1&#39;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
+<span class="c1">#&gt; x=&#39;1&#39;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>在 Pydantic V1 中，打印结果将是 <code>x=1</code>，因为该值将作为 <code>int</code> 通过验证。
+在 Pydantic V2 中，我们识别该值是其中一个情况的实例，并短路标准联合验证。</p>
+<p>要恢复到 V1 的非短路从左到右行为，请使用 <code>Field(union_mode='left_to_right')</code> 注释联合类型。
+有关详细信息，请参阅<a href="../concepts/unions/#union-modes">联合模式</a>。</p>
+<h4 id="required-optional-and-nullable-fields">必需、可选和可空字段<a class="headerlink" href="#required-optional-and-nullable-fields" title="Permanent link">&para;</a></h4>
+<p>Pydantic V2 更改了指定注释为 <code>Optional</code> 的字段是必需（即没有默认值）还是非必需（即具有 <code>None</code> 默认值或相应类型的任何其他值）的部分逻辑，现在更接近 <code>dataclasses</code> 的行为。类似地，注释为 <code>Any</code> 的字段不再具有 <code>None</code> 的默认值。</p>
+<p>下表描述了 V2 中字段注释的行为：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>字段定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>必需，不能为 <code>None</code></td>
+<td><code>f1: str</code></td>
+</tr>
+<tr>
+<td>非必需，不能为 <code>None</code>，默认为 <code>'abc'</code></td>
+<td><code>f2: str = 'abc'</code></td>
+</tr>
+<tr>
+<td>必需，可以为 <code>None</code></td>
+<td><code>f3: Optional[str]</code></td>
+</tr>
+<tr>
+<td>非必需，可以为 <code>None</code>，默认为 <code>None</code></td>
+<td><code>f4: Optional[str] = None</code></td>
+</tr>
+<tr>
+<td>非必需，可以为 <code>None</code>，默认为 <code>'abc'</code></td>
+<td><code>f5: Optional[str] = 'abc'</code></td>
+</tr>
+<tr>
+<td>必需，可以是任何类型（包括 <code>None</code>）</td>
+<td><code>f6: Any</code></td>
+</tr>
+<tr>
+<td>非必需，可以是任何类型（包括 <code>None</code>）</td>
+<td><code>f7: Any = None</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>注释为 <code>typing.Optional[T]</code> 的字段将是必需的，并且允许值为 <code>None</code>。
+ 这并不意味着该字段具有 <code>None</code> 的默认值。<em>（这是与 V1 的破坏性变更。）</em></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>如果提供了任何默认值，都会使字段变为非必需。</p>
+</div>
+<p>以下是演示上述内容的代码示例：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Python 3.9 and above</label><label for="__tabbed_3_2">Python 3.10 and above</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ValidationError</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Foo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">f1</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># 必需，不能为 None</span>
+    <span class="n">f2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># 必需，可以为 None - 与 str | None 相同</span>
+    <span class="n">f3</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 非必需，可以为 None</span>
+    <span class="n">f4</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Foobar&#39;</span>  <span class="c1"># 非必需，但不能为 None</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Foo</span><span class="p">(</span><span class="n">f1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f4</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1 validation error for Foo</span>
+<span class="sd">    f1</span>
+<span class="sd">      Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ValidationError</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Foo</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">f1</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># 必需，不能为 None</span>
+    <span class="n">f2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>  <span class="c1"># 必需，可以为 None - 与 str | None 相同</span>
+    <span class="n">f3</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 非必需，可以为 None</span>
+    <span class="n">f4</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Foobar&#39;</span>  <span class="c1"># 非必需，但不能为 None</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Foo</span><span class="p">(</span><span class="n">f1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f4</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1 validation error for Foo</span>
+<span class="sd">    f1</span>
+<span class="sd">      Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="_12">模式/字符串正则表达式<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h4>
+<p>Pydantic V1 使用 Python 的 regex 库。Pydantic V2 使用 Rust 的 <a href="https://github.com/rust-lang/regex">regex crate</a>。
+这个 crate 不仅仅是"Rust 版本的正则表达式"，它是一种完全不同的正则表达式方法。
+特别是，它承诺线性时间字符串搜索，以放弃几个功能为代价（即环视和反向引用）。
+我们认为这是一个值得做的权衡，特别是因为 Pydantic 用于验证不受信任的输入，确保不会因不受信任的输入而意外运行指数时间很重要。
+另一方面，对于不使用这些功能的任何人来说，复杂的正则表达式验证应该快几个数量级，因为它是在 Rust 中完成的并且是线性时间。</p>
+<p>如果您仍想使用 Python 的 regex 库，可以使用 <a href="../api/config/#pydantic.config.ConfigDict.regex_engine"><code>regex_engine</code></a> 配置设置。</p>
+<h3 id="_13">浮点数到整数的类型转换<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>在 V1 中，每当字段被注释为 <code>int</code> 时，任何浮点数值都会被接受，如果浮点数值包含非零小数部分，这可能导致潜在的数据丢失。在 V2 中，只有当小数部分为零时才允许从浮点数到整数的类型转换：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ValidationError</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">10.0</span><span class="p">))</span>
+<span class="c1">#&gt; x=10</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">Model</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">10.2</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1 validation error for Model</span>
+<span class="sd">    x</span>
+<span class="sd">      Input should be a valid integer, got a number with a fractional part [type=int_from_float, input_value=10.2, input_type=float]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="introduction-of-typeadapter"><code>TypeAdapter</code> 的介绍<a class="headerlink" href="#introduction-of-typeadapter" title="Permanent link">&para;</a></h3>
+<p>Pydantic V1 对验证或序列化非 <code>BaseModel</code> 类型的支持较弱。</p>
+<p>要处理这些类型，您必须创建一个"根"模型或使用 <code>pydantic.tools</code> 中的实用函数
+（即 <code>parse_obj_as</code> 和 <code>schema_of</code>）。</p>
+<p>在 Pydantic V2 中，这<em>容易得多</em>：<a class="autorefs autorefs-internal" href="../api/type_adapter/#pydantic.type_adapter.TypeAdapter"><code>TypeAdapter</code></a> 类允许您创建一个对象，
+该对象具有验证、序列化和为任意类型生成 JSON 模式的方法。
+这完全替代了 <code>parse_obj_as</code> 和 <code>schema_of</code>（现已弃用），
+并且还涵盖了一些"根"模型的使用场景。（<a href="../concepts/models/#rootmodel-and-custom-root-types"><code>RootModel</code></a>，
+<a href="#changes-to-pydanticbasemodel">上面讨论过</a>，涵盖了其他场景。）</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeAdapter</span>
+
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">adapter</span><span class="o">.</span><span class="n">validate_python</span><span class="p">([</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adapter</span><span class="o">.</span><span class="n">json_schema</span><span class="p">())</span>
+<span class="c1">#&gt; {&#39;items&#39;: {&#39;type&#39;: &#39;integer&#39;}, &#39;type&#39;: &#39;array&#39;}</span>
+</code></pre></div>
+<p>由于常见类型检查器推断泛型类型的限制，在某些情况下要获得正确的类型，
+您可能需要显式指定泛型参数：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeAdapter</span>
+
+<span class="n">adapter</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">](</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span>
+<span class="o">...</span>
+</code></pre></div>
+<p>有关更多信息，请参阅<a href="../concepts/type_adapter/">类型适配器</a>。</p>
+<h3 id="_14">定义自定义类型<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>我们彻底改革了在 pydantic 中定义自定义类型的方式。</p>
+<p>我们公开了用于生成 <code>pydantic-core</code> 和 JSON 模式的钩子，允许您在使用自己的自定义类型时获得 Pydantic V2 的所有性能优势。</p>
+<p>我们还引入了使用 <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/typing.html#typing.Annotated"><code>typing.Annotated</code></a> 向自己的类型添加自定义验证的方法。</p>
+<p>主要变更包括：</p>
+<ul>
+<li><code>__get_validators__</code> 应替换为 <code>__get_pydantic_core_schema__</code>。
+  有关更多信息，请参阅<a href="../concepts/types/#customizing_validation_with_get_pydantic_core_schema">自定义数据类型</a>。</li>
+<li><code>__modify_schema__</code> 变为 <code>__get_pydantic_json_schema__</code>。
+  有关更多信息，请参阅<a href="../concepts/json_schema/#customizing-json-schema">JSON 模式自定义</a>。</li>
+</ul>
+<p>此外，您可以使用 <a class="autorefs autorefs-external" href="https://docs.python.org/3/library/typing.html#typing.Annotated"><code>typing.Annotated</code></a> 通过注释类型来修改或提供类型的 <code>__get_pydantic_core_schema__</code> 和
+<code>__get_pydantic_json_schema__</code> 函数，而不是修改类型本身。
+这为将第三方类型与 Pydantic 集成提供了强大而灵活的机制，并且在某些情况下
+可能帮助您移除 Pydantic V1 中为绕过自定义类型限制而引入的 hack。</p>
+<p>有关更多信息，请参阅<a href="../concepts/types/#custom-types">自定义数据类型</a>。</p>
+<h3 id="json">JSON 模式生成的变更<a class="headerlink" href="#json" title="Permanent link">&para;</a></h3>
+<p>多年来，我们收到了许多关于更改 pydantic 生成的 JSON 模式的请求。</p>
+<p>在 Pydantic V2 中，我们尝试解决了许多常见请求：</p>
+<ul>
+<li><code>Optional</code> 字段的 JSON 模式现在指示允许值 <code>null</code>。</li>
+<li><code>Decimal</code> 类型现在在 JSON 模式中（并序列化）作为字符串公开。</li>
+<li>JSON 模式不再将命名元组保留为命名元组。</li>
+<li>我们默认生成的 JSON 模式现在针对草案 2020-12（带有一些 OpenAPI 扩展）。</li>
+<li>当它们不同时，您现在可以指定是要表示验证输入的 JSON 模式，还是序列化输出的 JSON 模式。</li>
+</ul>
+<p>然而，多年来有许多合理的更改请求我们选择不实现。</p>
+<p>在 Pydantic V1 中，即使您愿意自己实现更改，也非常困难，因为 JSON 模式
+生成过程涉及各种递归函数调用；要覆盖一个，您必须复制并修改整个实现。</p>
+<p>在 Pydantic V2 中，我们的设计目标之一是使自定义 JSON 模式生成更容易。为此，我们
+引入了 <a href="../api/json_schema/#pydantic.json_schema.GenerateJsonSchema"><code>GenerateJsonSchema</code></a> 类，
+它实现了将类型的 pydantic-core 模式转换为 JSON 模式。通过设计，该类将 JSON 模式生成过程分解为更小的方法，这些方法可以
+在子类中轻松重写以修改生成 JSON 模式的"全局"方法。</p>
+<p>可用于生成 JSON 模式的各种方法（例如 <code>BaseModel.model_json_schema</code> 或
+<code>TypeAdapter.json_schema</code>）接受关键字参数 <code>schema_generator: type[GenerateJsonSchema] = GenerateJsonSchema</code>，
+您可以将自定义子类传递给这些方法，以便使用自己的 JSON 模式生成方法。</p>
+<p>希望这意味着如果您不同意我们做出的任何选择，或者如果您依赖于 Pydantic V1 中
+在 Pydantic V2 中已更改的行为，您可以使用自定义 <code>schema_generator</code>，根据需要修改
+<code>GenerateJsonSchema</code> 类以适应您的应用程序。</p>
+<h3 id="basesettings-has-moved-to-pydantic-settings"><code>BaseSettings</code> 已迁移到 <code>pydantic-settings</code><a class="headerlink" href="#basesettings-has-moved-to-pydantic-settings" title="Permanent link">&para;</a></h3>
+<p><a href="../api/pydantic_settings/#pydantic_settings.BaseSettings"><code>BaseSettings</code></a>，Pydantic
+<a href="../concepts/pydantic_settings/">设置管理</a>的基础对象，已迁移到单独的包
+<a href="https://github.com/pydantic/pydantic-settings"><code>pydantic-settings</code></a>。</p>
+<p>此外，<code>parse_env_var</code> 类方法已被移除。因此，您需要
+<a href="../concepts/pydantic_settings/#customise-settings-sources">自定义设置源</a>
+以拥有自己的解析函数。</p>
+<h3 id="color-and-payment-card-numbers-moved-to-pydantic-extra-types">颜色和支付卡号已迁移到 <code>pydantic-extra-types</code><a class="headerlink" href="#color-and-payment-card-numbers-moved-to-pydantic-extra-types" title="Permanent link">&para;</a></h3>
+<p>以下特殊用途类型已迁移到
+<a href="https://github.com/pydantic/pydantic-extra-types">Pydantic Extra Types</a> 包，
+如果需要，可以单独安装。</p>
+<ul>
+<li><a href="../api/pydantic_extra_types_color/">颜色类型</a></li>
+<li><a href="../api/pydantic_extra_types_payment/">支付卡号</a></li>
+</ul>
+<h3 id="pydanticnetworks-url-dsn-str"><code>pydantic.networks</code> 中的 URL 和 DSN 类型不再继承自 <code>str</code><a class="headerlink" href="#pydanticnetworks-url-dsn-str" title="Permanent link">&para;</a></h3>
+<p>在 Pydantic V1 中，<a class="autorefs autorefs-internal" href="../api/networks/#pydantic.networks.AnyUrl"><code>AnyUrl</code></a> 类型继承自 <code>str</code>，所有其他
+<code>Url</code> 和 <code>Dsn</code> 类型都继承自这些类型。在 Pydantic V2 中，这些类型基于两个新的 <code>Url</code> 和 <code>MultiHostUrl</code>
+类构建，使用 <code>Annotated</code>。</p>
+<p>继承自 <code>str</code> 有优点也有缺点，对于 V2，我们决定最好移除这一点。要在期望 <code>str</code> 的 API 中使用这些
+类型，您现在需要转换它们（使用 <code>str(url)</code>）。</p>
+<p>Pydantic V2 使用 Rust 的 <a href="https://crates.io/crates/url">Url</a> crate 进行 URL 验证。
+一些 URL 验证与 V1 中的先前行为略有不同。
+一个显著的区别是，如果不包含路径，新的 <code>Url</code> 类型会在验证版本后附加斜杠，
+即使在 <code>Url</code> 类型构造函数的参数中未指定斜杠。请参阅以下示例了解此行为：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyUrl</span>
+
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">AnyUrl</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://google.com&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;https://google.com/&#39;</span>
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">AnyUrl</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://google.com/&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;https://google.com/&#39;</span>
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">AnyUrl</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://google.com/api&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;https://google.com/api&#39;</span>
+<span class="k">assert</span> <span class="nb">str</span><span class="p">(</span><span class="n">AnyUrl</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://google.com/api/&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;https://google.com/api/&#39;</span>
+</code></pre></div>
+<p>如果您仍想使用没有附加斜杠的旧行为，请查看此<a href="https://github.com/pydantic/pydantic/issues/7186#issuecomment-1690235887">解决方案</a>。</p>
+<h3 id="_15">约束类型<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p><code>Constrained*</code> 类已被<em>移除</em>，您应该使用 <code>Annotated[&lt;type&gt;, Field(...)]</code> 替换它们，例如：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConstrainedInt</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyInt</span><span class="p">(</span><span class="n">ConstrainedInt</span><span class="p">):</span>
+    <span class="n">ge</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">MyInt</span>
+</code></pre></div>
+<p>...变为：</p>
+<div class="language-python highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="n">MyInt</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">MyInt</span>
+</code></pre></div>
+<p>有关更多信息，请参阅<a href="../concepts/types/#using-the-annotated-pattern">通过 <code>Annotated</code> 组合类型</a>文档。</p>
+<p>对于 <code>ConstrainedStr</code>，您可以使用 <a class="autorefs autorefs-internal" href="../api/types/#pydantic.types.StringConstraints"><code>StringConstraints</code></a> 代替。</p>
+<h3 id="mypy">Mypy 插件<a class="headerlink" href="#mypy" title="Permanent link">&para;</a></h3>
+<p>Pydantic V2 包含一个 <a href="https://mypy.readthedocs.io/en/stable/extending_mypy.html#configuring-mypy-to-use-plugins">mypy</a> 插件，位于
+<code>pydantic.mypy</code> 中。</p>
+<p>当使用 <a href="./#continue-using-pydantic-v1-features">V1 功能</a>时，
+可能还需要启用 <code>pydantic.v1.mypy</code> 插件。</p>
+<p>配置 mypy 插件的方法如下：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1"><code>mypy.ini</code></label><label for="__tabbed_4_2"><code>pyproject.toml</code></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-ini highlight"><pre><span></span><code><span class="k">[mypy]</span>
+<span class="na">plugins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">pydantic.mypy, pydantic.v1.mypy</span><span class="w">  </span><span class="c1"># 如果需要，包含 `.v1.mypy`。</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-toml highlight"><pre><span></span><code><span class="k">[tool.mypy]</span>
+<span class="n">plugins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;pydantic.mypy&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pydantic.v1.mypy&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1"># 如果需要，包含 `.v1.mypy`。</span>
+<span class="p">]</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="_16">其他变更<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h2>
+<ul>
+<li>放弃了对 <a href="https://github.com/JoshData/python-email-validator"><code>email-validator&lt;2.0.0</code></a> 的支持。请确保使用
+  <code>pip install -U email-validator</code> 进行更新。</li>
+</ul>
+<h2 id="pydantic-v2_1">在 Pydantic V2 中迁移的<a class="headerlink" href="#pydantic-v2_1" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Pydantic V1</th>
+<th>Pydantic V2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pydantic.BaseSettings</code></td>
+<td><a href="#basesettings-has-moved-to-pydantic-settings"><code>pydantic_settings.BaseSettings</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.color</code></td>
+<td><a class="autorefs autorefs-internal" href="../api/pydantic_extra_types_color/#pydantic_extra_types.color"><code>pydantic_extra_types.color</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.types.PaymentCardBrand</code></td>
+<td><a href="#color-and-payment-card-numbers-moved-to-pydantic-extra-types"><code>pydantic_extra_types.PaymentCardBrand</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.types.PaymentCardNumber</code></td>
+<td><a href="#color-and-payment-card-numbers-moved-to-pydantic-extra-types"><code>pydantic_extra_types.PaymentCardNumber</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.version_info</code></td>
+<td><a class="autorefs autorefs-internal" href="../api/version/#pydantic.version.version_info"><code>pydantic.version.version_info</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.error_wrappers.ValidationError</code></td>
+<td><a class="autorefs autorefs-internal" href="../api/pydantic_core/#pydantic_core.ValidationError"><code>pydantic.ValidationError</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.to_camel</code></td>
+<td><a class="autorefs autorefs-internal" href="../api/config/#pydantic.alias_generators.to_pascal"><code>pydantic.alias_generators.to_pascal</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.to_lower_camel</code></td>
+<td><a class="autorefs autorefs-internal" href="../api/config/#pydantic.alias_generators.to_camel"><code>pydantic.alias_generators.to_camel</code></a></td>
+</tr>
+<tr>
+<td><code>pydantic.PyObject</code></td>
+<td><a class="autorefs autorefs-internal" href="../api/types/#pydantic.types.ImportString"><code>pydantic.ImportString</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pydantic-v2_2">已弃用并在 Pydantic V2 中迁移的<a class="headerlink" href="#pydantic-v2_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Pydantic V1</th>
+<th>Pydantic V2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pydantic.tools.schema_of</code></td>
+<td><code>pydantic.deprecated.tools.schema_of</code></td>
+</tr>
+<tr>
+<td><code>pydantic.tools.parse_obj_as</code></td>
+<td><code>pydantic.deprecated.tools.parse_obj_as</code></td>
+</tr>
+<tr>
+<td><code>pydantic.tools.schema_json_of</code></td>
+<td><code>pydantic.deprecated.tools.schema_json_of</code></td>
+</tr>
+<tr>
+<td><code>pydantic.json.pydantic_encoder</code></td>
+<td><code>pydantic.deprecated.json.pydantic_encoder</code></td>
+</tr>
+<tr>
+<td><code>pydantic.validate_arguments</code></td>
+<td><code>pydantic.deprecated.decorator.validate_arguments</code></td>
+</tr>
+<tr>
+<td><code>pydantic.json.custom_pydantic_encoder</code></td>
+<td><code>pydantic.deprecated.json.custom_pydantic_encoder</code></td>
+</tr>
+<tr>
+<td><code>pydantic.json.ENCODERS_BY_TYPE</code></td>
+<td><code>pydantic.deprecated.json.ENCODERS_BY_TYPE</code></td>
+</tr>
+<tr>
+<td><code>pydantic.json.timedelta_isoformat</code></td>
+<td><code>pydantic.deprecated.json.timedelta_isoformat</code></td>
+</tr>
+<tr>
+<td><code>pydantic.decorator.validate_arguments</code></td>
+<td><code>pydantic.deprecated.decorator.validate_arguments</code></td>
+</tr>
+<tr>
+<td><code>pydantic.class_validators.validator</code></td>
+<td><code>pydantic.deprecated.class_validators.validator</code></td>
+</tr>
+<tr>
+<td><code>pydantic.class_validators.root_validator</code></td>
+<td><code>pydantic.deprecated.class_validators.root_validator</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.deep_update</code></td>
+<td><code>pydantic.v1.utils.deep_update</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.GetterDict</code></td>
+<td><code>pydantic.v1.utils.GetterDict</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.lenient_issubclass</code></td>
+<td><code>pydantic.v1.utils.lenient_issubclass</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.lenient_isinstance</code></td>
+<td><code>pydantic.v1.utils.lenient_isinstance</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.is_valid_field</code></td>
+<td><code>pydantic.v1.utils.is_valid_field</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.update_not_none</code></td>
+<td><code>pydantic.v1.utils.update_not_none</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.import_string</code></td>
+<td><code>pydantic.v1.utils.import_string</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.Representation</code></td>
+<td><code>pydantic.v1.utils.Representation</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.ROOT_KEY</code></td>
+<td><code>pydantic.v1.utils.ROOT_KEY</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.smart_deepcopy</code></td>
+<td><code>pydantic.v1.utils.smart_deepcopy</code></td>
+</tr>
+<tr>
+<td><code>pydantic.utils.sequence_like</code></td>
+<td><code>pydantic.v1.utils.sequence_like</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="pydantic-v2_3">在 Pydantic V2 中移除的<a class="headerlink" href="#pydantic-v2_3" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>pydantic.ConstrainedBytes</code></li>
+<li><code>pydantic.ConstrainedDate</code></li>
+<li><code>pydantic.ConstrainedDecimal</code></li>
+<li><code>pydantic.ConstrainedFloat</code></li>
+<li><code>pydantic.ConstrainedFrozenSet</code></li>
+<li><code>pydantic.ConstrainedInt</code></li>
+<li><code>pydantic.ConstrainedList</code></li>
+<li><code>pydantic.ConstrainedSet</code></li>
+<li><code>pydantic.ConstrainedStr</code></li>
+<li><code>pydantic.JsonWrapper</code></li>
+<li><code>pydantic.NoneBytes</code><ul>
+<li>这是 <code>None | bytes</code> 的别名。</li>
+</ul>
+</li>
+<li><code>pydantic.NoneStr</code><ul>
+<li>这是 <code>None | str</code> 的别名。</li>
+</ul>
+</li>
+<li><code>pydantic.NoneStrBytes</code><ul>
+<li>这是 <code>None | str | bytes</code> 的别名。</li>
+</ul>
+</li>
+<li><code>pydantic.Protocol</code></li>
+<li><code>pydantic.Required</code></li>
+<li><code>pydantic.StrBytes</code><ul>
+<li>这是 <code>str | bytes</code> 的别名。</li>
+</ul>
+</li>
+<li><code>pydantic.compiled</code></li>
+<li><code>pydantic.config.get_config</code></li>
+<li><code>pydantic.config.inherit_config</code></li>
+<li><code>pydantic.config.prepare_config</code></li>
+<li><code>pydantic.create_model_from_namedtuple</code></li>
+<li><code>pydantic.create_model_from_typeddict</code></li>
+<li><code>pydantic.dataclasses.create_pydantic_model_from_dataclass</code></li>
+<li><code>pydantic.dataclasses.make_dataclass_validator</code></li>
+<li><code>pydantic.dataclasses.set_validation</code></li>
+<li><code>pydantic.datetime_parse.parse_date</code></li>
+<li><code>pydantic.datetime_parse.parse_time</code></li>
+<li><code>pydantic.datetime_parse.parse_datetime</code></li>
+<li><code>pydantic.datetime_parse.parse_duration</code></li>
+<li><code>pydantic.error_wrappers.ErrorWrapper</code></li>
+<li><code>pydantic.errors.AnyStrMaxLengthError</code></li>
+<li><code>pydantic.errors.AnyStrMinLengthError</code></li>
+<li><code>pydantic.errors.ArbitraryTypeError</code></li>
+<li><code>pydantic.errors.BoolError</code></li>
+<li><code>pydantic.errors.BytesError</code></li>
+<li><code>pydantic.errors.CallableError</code></li>
+<li><code>pydantic.errors.ClassError</code></li>
+<li><code>pydantic.errors.ColorError</code></li>
+<li><code>pydantic.errors.ConfigError</code></li>
+<li><code>pydantic.errors.DataclassTypeError</code></li>
+<li><code>pydantic.errors.DateError</code></li>
+<li><code>pydantic.errors.DateNotInTheFutureError</code></li>
+<li><code>pydantic.errors.DateNotInThePastError</code></li>
+<li><code>pydantic.errors.DateTimeError</code></li>
+<li><code>pydantic.errors.DecimalError</code></li>
+<li><code>pydantic.errors.DecimalIsNotFiniteError</code></li>
+<li><code>pydantic.errors.DecimalMaxDigitsError</code></li>
+<li><code>pydantic.errors.DecimalMaxPlacesError</code></li>
+<li><code>pydantic.errors.DecimalWholeDigitsError</code></li>
+<li><code>pydantic.errors.DictError</code></li>
+<li><code>pydantic.errors.DurationError</code></li>
+<li><code>pydantic.errors.EmailError</code></li>
+<li><code>pydantic.errors.EnumError</code></li>
+<li><code>pydantic.errors.EnumMemberError</code></li>
+<li><code>pydantic.errors.ExtraError</code></li>
+<li><code>pydantic.errors.FloatError</code></li>
+<li><code>pydantic.errors.FrozenSetError</code></li>
+<li><code>pydantic.errors.FrozenSetMaxLengthError</code></li>
+<li><code>pydantic.errors.FrozenSetMinLengthError</code></li>
+<li><code>pydantic.errors.HashableError</code></li>
+<li><code>pydantic.errors.IPv4AddressError</code></li>
+<li><code>pydantic.errors.IPv4InterfaceError</code></li>
+<li><code>pydantic.errors.IPv4NetworkError</code></li>
+<li><code>pydantic.errors.IPv6AddressError</code></li>
+<li><code>pydantic.errors.IPv6InterfaceError</code></li>
+<li><code>pydantic.errors.IPv6NetworkError</code></li>
+<li><code>pydantic.errors.IPvAnyAddressError</code></li>
+<li><code>pydantic.errors.IPvAnyInterfaceError</code></li>
+<li><code>pydantic.errors.IPvAnyNetworkError</code></li>
+<li><code>pydantic.errors.IntEnumError</code></li>
+<li><code>pydantic.errors.IntegerError</code></li>
+<li><code>pydantic.errors.InvalidByteSize</code></li>
+<li><code>pydantic.errors.InvalidByteSizeUnit</code></li>
+<li><code>pydantic.errors.InvalidDiscriminator</code></li>
+<li><code>pydantic.errors.InvalidLengthForBrand</code></li>
+<li><code>pydantic.errors.JsonError</code></li>
+<li><code>pydantic.errors.JsonTypeError</code></li>
+<li><code>pydantic.errors.ListError</code></li>
+<li><code>pydantic.errors.ListMaxLengthError</code></li>
+<li><code>pydantic.errors.ListMinLengthError</code></li>
+<li><code>pydantic.errors.ListUniqueItemsError</code></li>
+<li><code>pydantic.errors.LuhnValidationError</code></li>
+<li><code>pydantic.errors.MissingDiscriminator</code></li>
+<li><code>pydantic.errors.MissingError</code></li>
+<li><code>pydantic.errors.NoneIsAllowedError</code></li>
+<li><code>pydantic.errors.NoneIsNotAllowedError</code></li>
+<li><code>pydantic.errors.NotDigitError</code></li>
+<li><code>pydantic.errors.NotNoneError</code></li>
+<li><code>pydantic.errors.NumberNotGeError</code></li>
+<li><code>pydantic.errors.NumberNotGtError</code></li>
+<li><code>pydantic.errors.NumberNotLeError</code></li>
+<li><code>pydantic.errors.NumberNotLtError</code></li>
+<li><code>pydantic.errors.NumberNotMultipleError</code></li>
+<li><code>pydantic.errors.PathError</code></li>
+<li><code>pydantic.errors.PathNotADirectoryError</code></li>
+<li><code>pydantic.errors.PathNotAFileError</code></li>
+<li><code>pydantic.errors.PathNotExistsError</code></li>
+<li><code>pydantic.errors.PatternError</code></li>
+<li><code>pydantic.errors.PyObjectError</code></li>
+<li><code>pydantic.errors.PydanticTypeError</code></li>
+<li><code>pydantic.errors.PydanticValueError</code></li>
+<li><code>pydantic.errors.SequenceError</code></li>
+<li><code>pydantic.errors.SetError</code></li>
+<li><code>pydantic.errors.SetMaxLengthError</code></li>
+<li><code>pydantic.errors.SetMinLengthError</code></li>
+<li><code>pydantic.errors.StrError</code></li>
+<li><code>pydantic.errors.StrRegexError</code></li>
+<li><code>pydantic.errors.StrictBoolError</code></li>
+<li><code>pydantic.errors.SubclassError</code></li>
+<li><code>pydantic.errors.TimeError</code></li>
+<li><code>pydantic.errors.TupleError</code></li>
+<li><code>pydantic.errors.TupleLengthError</code></li>
+<li><code>pydantic.errors.UUIDError</code></li>
+<li><code>pydantic.errors.UUIDVersionError</code></li>
+<li><code>pydantic.errors.UrlError</code></li>
+<li><code>pydantic.errors.UrlExtraError</code></li>
+<li><code>pydantic.errors.UrlHostError</code></li>
+<li><code>pydantic.errors.UrlHostTldError</code></li>
+<li><code>pydantic.errors.UrlPortError</code></li>
+<li><code>pydantic.errors.UrlSchemeError</code></li>
+<li><code>pydantic.errors.UrlSchemePermittedError</code></li>
+<li><code>pydantic.errors.UrlUserInfoError</code></li>
+<li><code>pydantic.errors.WrongConstantError</code></li>
+<li><code>pydantic.main.validate_model</code></li>
+<li><code>pydantic.networks.stricturl</code></li>
+<li><code>pydantic.parse_file_as</code></li>
+<li><code>pydantic.parse_raw_as</code></li>
+<li><code>pydantic.stricturl</code></li>
+<li><code>pydantic.tools.parse_file_as</code></li>
+<li><code>pydantic.tools.parse_raw_as</code></li>
+<li><code>pydantic.types.JsonWrapper</code></li>
+<li><code>pydantic.types.NoneBytes</code></li>
+<li><code>pydantic.types.NoneStr</code></li>
+<li><code>pydantic.types.NoneStrBytes</code></li>
+<li><code>pydantic.types.PyObject</code></li>
+<li><code>pydantic.types.StrBytes</code></li>
+<li><code>pydantic.typing.evaluate_forwardref</code></li>
+<li><code>pydantic.typing.AbstractSetIntStr</code></li>
+<li><code>pydantic.typing.AnyCallable</code></li>
+<li><code>pydantic.typing.AnyClassMethod</code></li>
+<li><code>pydantic.typing.CallableGenerator</code></li>
+<li><code>pydantic.typing.DictAny</code></li>
+<li><code>pydantic.typing.DictIntStrAny</code></li>
+<li><code>pydantic.typing.DictStrAny</code></li>
+<li><code>pydantic.typing.IntStr</code></li>
+<li><code>pydantic.typing.ListStr</code></li>
+<li><code>pydantic.typing.MappingIntStrAny</code></li>
+<li><code>pydantic.typing.NoArgAnyCallable</code></li>
+<li><code>pydantic.typing.NoneType</code></li>
+<li><code>pydantic.typing.ReprArgs</code></li>
+<li><code>pydantic.typing.SetStr</code></li>
+<li><code>pydantic.typing.StrPath</code></li>
+<li><code>pydantic.typing.TupleGenerator</code></li>
+<li><code>pydantic.typing.WithArgsTypes</code></li>
+<li><code>pydantic.typing.all_literal_values</code></li>
+<li><code>pydantic.typing.display_as_type</code></li>
+<li><code>pydantic.typing.get_all_type_hints</code></li>
+<li><code>pydantic.typing.get_args</code></li>
+<li><code>pydantic.typing.get_origin</code></li>
+<li><code>pydantic.typing.get_sub_types</code></li>
+<li><code>pydantic.typing.is_callable_type</code></li>
+<li><code>pydantic.typing.is_classvar</code></li>
+<li><code>pydantic.typing.is_finalvar</code></li>
+<li><code>pydantic.typing.is_literal_type</code></li>
+<li><code>pydantic.typing.is_namedtuple</code></li>
+<li><code>pydantic.typing.is_new_type</code></li>
+<li><code>pydantic.typing.is_none_type</code></li>
+<li><code>pydantic.typing.is_typeddict</code></li>
+<li><code>pydantic.typing.is_typeddict_special</code></li>
+<li><code>pydantic.typing.is_union</code></li>
+<li><code>pydantic.typing.new_type_supertype</code></li>
+<li><code>pydantic.typing.resolve_annotations</code></li>
+<li><code>pydantic.typing.typing_base</code></li>
+<li><code>pydantic.typing.update_field_forward_refs</code></li>
+<li><code>pydantic.typing.update_model_forward_refs</code></li>
+<li><code>pydantic.utils.ClassAttribute</code></li>
+<li><code>pydantic.utils.DUNDER_ATTRIBUTES</code></li>
+<li><code>pydantic.utils.PyObjectStr</code></li>
+<li><code>pydantic.utils.ValueItems</code></li>
+<li><code>pydantic.utils.almost_equal_floats</code></li>
+<li><code>pydantic.utils.get_discriminator_alias_and_values</code></li>
+<li><code>pydantic.utils.get_model</code></li>
+<li><code>pydantic.utils.get_unique_discriminator_alias</code></li>
+<li><code>pydantic.utils.in_ipython</code></li>
+<li><code>pydantic.utils.is_valid_identifier</code></li>
+<li><code>pydantic.utils.path_type</code></li>
+<li><code>pydantic.utils.validate_field_name</code></li>
+<li><code>pydantic.validate_model</code></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <a href="https://github.com/oaixnah" target="_blank">译者 oaixnah</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link", "content.code.annotate", "content.code.copy", "announce.dismiss", "navigation.tabs", "navigation.instant", "navigation.instant.prefetch", "navigation.instant.preview", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": {"alias": true, "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
