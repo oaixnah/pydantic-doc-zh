@@ -12,19 +12,11 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Extract version from tag
-        id: extract_version
-        run: |
-          # 从 tag 中提取 MAJOR.MINOR 版本号
-          VERSION_MAJOR_MINOR=$(echo ${{ github.ref_name }} | sed 's/\.[^.]*$//')
-          echo "VERSION_MAJOR_MINOR=$VERSION_MAJOR_MINOR" >> $GITHUB_OUTPUT
-          echo "Extracted version: $VERSION_MAJOR_MINOR from tag: ${{ github.ref_name }}"
-
       - uses: actions/checkout@v4
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config user.email github-actions[bot]@users.noreply.github.com
 
       - uses: astral-sh/setup-uv@v6
         with:
@@ -39,4 +31,4 @@ jobs:
           ln -s .venv/lib/python*/site-packages/pydantic_settings pydantic_settings
           ln -s .venv/lib/python*/site-packages/pydantic_extra_types pydantic_extra_types
 
-      - run: uv run mike deploy ${{ steps.extract_version.outputs.VERSION_MAJOR_MINOR }} latest --update-aliases --push
+      - run: uv run mike deploy ${{ github.ref_name }} latest --update-aliases --push
