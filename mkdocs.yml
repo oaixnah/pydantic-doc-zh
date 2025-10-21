@@ -46,10 +46,15 @@ theme:
     - toc.follow
   logo: 'logo-white.svg'
   favicon: 'favicon.png'
+  custom_dir: docs/theme
 
 repo_name: pydantic/pydantic
 repo_url: https://github.com/pydantic/pydantic
 extra:
+  analytics:
+    provider: !ENV ANALYTICS_PROVIDER
+    property: !ENV GOOGLE_ANALYTICS_KEY
+    clarity: !ENV CLARITY_PROJECT_ID
   version:
     alias: true
     provider: mike
