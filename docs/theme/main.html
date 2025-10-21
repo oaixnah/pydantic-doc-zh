@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% block extrahead %}
 {% if config.extra.analytics.clarity %}
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -9,3 +10,4 @@
     })(window, document, "clarity", "script", "{{ config.extra.analytics.clarity }}");
 </script>
 {% endif %}
+{% endblock %}
