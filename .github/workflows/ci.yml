@@ -44,6 +44,6 @@ jobs:
 
       - run: uv run mike deploy ${{ steps.extract_version.outputs.DOC_VERSION }} latest --update-aliases --push
         env:
-          UV_ANALYTICS_PROVIDER: ${{ secrets.ANALYTICS_PROVIDER }}
-          UV_GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
-          UV_CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
+          ANALYTICS_PROVIDER: ${{ secrets.ANALYTICS_PROVIDER }}
+          GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
+          CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
