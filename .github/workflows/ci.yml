@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - '*.*'
+      - '*.*.*'
 
 jobs:
   publish:
@@ -31,4 +32,11 @@ jobs:
           ln -s .venv/lib/python*/site-packages/pydantic_settings pydantic_settings
           ln -s .venv/lib/python*/site-packages/pydantic_extra_types pydantic_extra_types
 
-      - run: uv run mike deploy ${{ github.ref_name }} latest --update-aliases --push
+      - name: Extract major version
+        id: extract_version
+        run: |
+          # 提取主要版本号 (如从 2.12.1 提取 2.12)
+          DOC_VERSION=$(echo "${{ github.ref_name }}" | cut -d. -f1-2)
+          echo "DOC_VERSION=$DOC_VERSION" >> $GITHUB_OUTPUT
+
+      - run: uv run mike deploy ${{ steps.extract_version.outputs.DOC_VERSION }} latest --update-aliases --push
