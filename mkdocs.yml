@@ -1,5 +1,5 @@
 site_name: Pydantic Validation 中文文档
-site_description: Data validation using Python type hints
+site_description: 使用 Python 类型提示进行数据验证
 copyright: <a href="https://github.com/oaixnah" target="_blank">译者 oaixnah</a>
 strict: true
 site_url: https://docs.pydantic.dev/
